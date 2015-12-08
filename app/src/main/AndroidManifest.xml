@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ashok.android.cric_grap" >
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/teamlogo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".Splash_Screen"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".DashBoard"
+            android:label="@string/title_activity_dash_board"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.Navication_selection_class.cric_grap.Add_player"
+            android:label="@string/addPlayer" />
+        <activity
+            android:name="com.Navication_selection_class.cric_grap.Score_Entry"
+            android:label="@string/title_activity_score__entry"
+            android:parentActivityName=".DashBoard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashBoard" />
+        </activity>
+        <activity
+            android:name=".ScoreBoard"
+            android:label="@string/title_activity_score_board"
+            android:parentActivityName="com.Navication_selection_class.cric_grap.Score_Entry"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.Navication_selection_class.cric_grap.Score_Entry" />
+        </activity>
+        <activity
+            android:name=".Contactus"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Over_selection"
+            android:label="@string/title_activity_over_selection"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Scorum"
+            android:label="@string/title_activity_scorum"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".Select_Over" >
+        </activity>
+    </application>
+
+</manifest>
