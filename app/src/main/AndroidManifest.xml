@@ -70,10 +70,17 @@
         <activity
             android:name=".Scorum"
             android:label="@string/title_activity_scorum"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity android:name=".Select_Over" >
+        </activity>
+        <activity
+            android:name=".History"
+            android:label="@string/title_activity_history"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".IndividualScoreView" >
         </activity>
     </application>
 

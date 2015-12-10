@@ -281,7 +281,7 @@ public class DashBoard extends AppCompatActivity
             Intent intent = new Intent(DashBoard.this, Add_player.class);
             startActivity(intent);
         } else if (id == R.id.nav_history) {
-            Intent intent = new Intent(DashBoard.this, Contactus.class);
+            Intent intent = new Intent(DashBoard.this, History.class);
             startActivity(intent);
         } else if (id == R.id.nav_score_entry) {
 

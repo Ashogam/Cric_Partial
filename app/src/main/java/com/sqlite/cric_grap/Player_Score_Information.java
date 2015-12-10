@@ -10,6 +10,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.utility.cric_grap.HistoryGetSet;
+import com.utility.cric_grap.IndividualGetSet;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +26,8 @@ public class Player_Score_Information {
 
     private Context context;
     DBHelper dbHelper = null;
-    SQLiteDatabase sqLiteDatabase = null;
+    public static SQLiteDatabase sqLiteDatabase = null;
+    ArrayList<HistoryGetSet> sets=new ArrayList<>();;
 
     public Player_Score_Information(Context context) {
         this.context = context;
@@ -57,6 +61,8 @@ public class Player_Score_Information {
     }
 
 
+
+
     public void delete() {
         try {
 
@@ -66,6 +72,56 @@ public class Player_Score_Information {
             System.out.println("DeleteTable one Gets Exception");
         }
 
+    }
+
+    public ArrayList<IndividualGetSet> showOnList(String innings,String dates){
+        ArrayList<IndividualGetSet> getSets=null;
+        Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM "+DBHelper.TABLE_NAME+" WHERE "+DBHelper.INNINGS+"='"+innings+"' AND "+DBHelper.DATE+"='"+dates+"'",null);
+        Log.w("cuesor",cursor.getCount()+"");
+
+        if(cursor.moveToFirst()){
+            getSets=new ArrayList<>();
+            Log.w("cuesor","________"+cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME))+"");
+
+            do{
+                IndividualGetSet set=new IndividualGetSet();
+                Log.w("cuesor",cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME))+"");
+                Log.w("cuesor",cursor.getString(cursor.getColumnIndex(DBHelper.BALL_NUMBER))+"");
+                Log.w("cuesor", cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)) + "");
+                set.setPLAYERNAME(cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME)));
+                set.setBallNumber(cursor.getString(cursor.getColumnIndex(DBHelper.BALL_NUMBER)));
+                set.setSCORE(cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)));
+                getSets.add(set);
+            }while (cursor.moveToNext());
+            for(int i=0;i<getSets.size();i++){
+                Log.d("forrrr",getSets.get(i).getBallNumber());
+            }
+            return getSets;
+        }
+        return null;
+    }
+
+    public ArrayList<HistoryGetSet> searchList(String date){
+        HistoryGetSet historyGetSet=new HistoryGetSet();;
+        Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM "+DBHelper.TABLE_DASH_NAME+" WHERE "+DBHelper.DATE+"='"+date+"'",null);
+        if(cursor.moveToFirst()){
+
+            do{
+
+                historyGetSet.setTEAMA(cursor.getString(cursor.getColumnIndex(DBHelper.TEAM_A)));
+                historyGetSet.setTEAMB(cursor.getString(cursor.getColumnIndex(DBHelper.TEAM_B)));
+                historyGetSet.setINNINGS(cursor.getString(cursor.getColumnIndex(DBHelper.INNINGS)));
+                historyGetSet.setOVER(cursor.getString(cursor.getColumnIndex(DBHelper.TOTAL_OVER)));
+                sets.add(historyGetSet);
+            }while(cursor.moveToNext());
+            for(int i=0;i<sets.size();i++){
+                Log.d("forrrr",sets.get(i).getTEAMA());
+            }
+            return sets;
+
+
+        }
+        return null;
     }
 
     public int sumOfScore(String created_date, String innings) {

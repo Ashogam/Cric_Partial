@@ -38,6 +38,7 @@ public class Score_Entry extends AppCompatActivity {
     Custom_List_Adapter listAdapter;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
