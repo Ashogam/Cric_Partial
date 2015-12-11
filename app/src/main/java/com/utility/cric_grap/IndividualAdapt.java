@@ -36,7 +36,7 @@ public class IndividualAdapt extends ArrayAdapter<IndividualGetSet>{
 
             for(int i=0;i<items.size();i++){
                 Log.d("for",items.get(i).getPLAYERNAME());
-                Log.d("for", items.get(i).getBallNumber());
+                Log.d("for", items.get(i).getBALL_NUMBER());
                 Log.d("for",items.get(i).getSCORE());
             }
 
@@ -64,10 +64,8 @@ public class IndividualAdapt extends ArrayAdapter<IndividualGetSet>{
                 if (items.size() <= 0) {
                     holder.indBall.setText("No Data");
                 } else {
-                    Log.d("ball",items.get(position).getBallNumber());
-                    Log.d("name",items.get(position).getPLAYERNAME());
-                    Log.d("Score",items.get(position).getSCORE());
-                    holder.indBall.setText(items.get(position).getBallNumber());
+
+                    holder.indBall.setText(items.get(position).getBALL_NUMBER());
                     holder.indName.setText(items.get(position).getPLAYERNAME());
                     holder.indScore.setText(items.get(position).getSCORE());
 

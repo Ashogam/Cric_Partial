@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.utility.cric_grap.HistoryGetSet;
 import com.utility.cric_grap.IndividualGetSet;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,7 +78,8 @@ public class Player_Score_Information {
 
     }
 
-    public ArrayList<IndividualGetSet> showOnList(String innings,String dates){
+    public JSONArray showOnList(String innings,String dates) throws JSONException {
+        JSONArray jsonArray=new JSONArray();
         ArrayList<IndividualGetSet> getSets=null;
         Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM "+DBHelper.TABLE_NAME+" WHERE "+DBHelper.INNINGS+"='"+innings+"' AND "+DBHelper.DATE+"='"+dates+"'",null);
         Log.w("cuesor",cursor.getCount()+"");
@@ -84,40 +89,38 @@ public class Player_Score_Information {
             Log.w("cuesor","________"+cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME))+"");
 
             do{
-                IndividualGetSet set=new IndividualGetSet();
-                Log.w("cuesor",cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME))+"");
-                Log.w("cuesor",cursor.getString(cursor.getColumnIndex(DBHelper.BALL_NUMBER))+"");
-                Log.w("cuesor", cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)) + "");
-                set.setPLAYERNAME(cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME)));
-                set.setBallNumber(cursor.getString(cursor.getColumnIndex(DBHelper.BALL_NUMBER)));
-                set.setSCORE(cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)));
-                getSets.add(set);
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("PlayerName", cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME)));
+                jsonObject.put("Ball_number", cursor.getString(cursor.getColumnIndex(DBHelper.BALL_NUMBER)));
+                jsonObject.put("Score", cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)));
+                jsonArray.put(jsonObject);
             }while (cursor.moveToNext());
-            for(int i=0;i<getSets.size();i++){
-                Log.d("forrrr",getSets.get(i).getBallNumber());
-            }
-            return getSets;
+            Log.w("cuesor",jsonArray.toString());
+            return jsonArray;
         }
         return null;
     }
 
-    public ArrayList<HistoryGetSet> searchList(String date){
+    public JSONArray searchList(String date) throws JSONException {
+        JSONArray jsonArray=new JSONArray();
         HistoryGetSet historyGetSet=new HistoryGetSet();;
         Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM "+DBHelper.TABLE_DASH_NAME+" WHERE "+DBHelper.DATE+"='"+date+"'",null);
         if(cursor.moveToFirst()){
 
             do{
-
-                historyGetSet.setTEAMA(cursor.getString(cursor.getColumnIndex(DBHelper.TEAM_A)));
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("TeamA", cursor.getString(cursor.getColumnIndex(DBHelper.TEAM_A)));
+                jsonObject.put("TeamB", cursor.getString(cursor.getColumnIndex(DBHelper.TEAM_B)));
+                jsonObject.put("Innings", cursor.getString(cursor.getColumnIndex(DBHelper.INNINGS)));
+                jsonObject.put("Total_Over", cursor.getString(cursor.getColumnIndex(DBHelper.TOTAL_OVER)));
+                /*historyGetSet.setTEAMA(cursor.getString(cursor.getColumnIndex(DBHelper.TEAM_A)));
                 historyGetSet.setTEAMB(cursor.getString(cursor.getColumnIndex(DBHelper.TEAM_B)));
                 historyGetSet.setINNINGS(cursor.getString(cursor.getColumnIndex(DBHelper.INNINGS)));
-                historyGetSet.setOVER(cursor.getString(cursor.getColumnIndex(DBHelper.TOTAL_OVER)));
-                sets.add(historyGetSet);
+                historyGetSet.setOVER(cursor.getString(cursor.getColumnIndex(DBHelper.TOTAL_OVER)));*/
+                jsonArray.put(jsonObject);
             }while(cursor.moveToNext());
-            for(int i=0;i<sets.size();i++){
-                Log.d("forrrr",sets.get(i).getTEAMA());
-            }
-            return sets;
+            Log.w("JsonArray",jsonArray.toString());
+            return jsonArray;
 
 
         }

@@ -16,6 +16,9 @@ import com.utility.cric_grap.HistoryGetSet;
 import com.utility.cric_grap.IndividualAdapt;
 import com.utility.cric_grap.IndividualGetSet;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class IndividualScoreView extends AppCompatActivity {
@@ -24,6 +27,7 @@ public class IndividualScoreView extends AppCompatActivity {
     LinearLayout title;
     private Player_Score_Information information;
     IndividualAdapt individualAdapt;
+    private ArrayList<IndividualGetSet> arrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +43,30 @@ public class IndividualScoreView extends AppCompatActivity {
         new AsyncTask<Void,Void,ArrayList<IndividualGetSet>>(){
             String dates=History.chooseDate.getText().toString();
 
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                arrayList=new ArrayList<IndividualGetSet>();
+            }
 
             @Override
             protected ArrayList<IndividualGetSet> doInBackground(Void... params) {
                 try{
                     information.open();
-                    ArrayList<IndividualGetSet> getSets=information.showOnList(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
-
-                    return getSets;
+                    JSONArray array=information.showOnList(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
+                    Log.w("arrayyyy",array.toString());
+                    for(int i=0;i<array.length();i++){
+                        JSONObject object=array.getJSONObject(i);
+                        IndividualGetSet indi=new IndividualGetSet();
+                        Log.w("arrayyyy",object.getString("PlayerName"));
+                        Log.w("arrayyyy",object.getString("Ball_number"));
+                        Log.w("arrayyyy",object.getString("Score"));
+                        indi.setPLAYERNAME(object.getString("PlayerName"));
+                        indi.setBALL_NUMBER(object.getString("Ball_number"));
+                        indi.setSCORE(object.getString("Score"));
+                        arrayList.add(indi);
+                    }
+                    return arrayList;
                 }catch (Exception e){
                     e.printStackTrace();
                 }finally {

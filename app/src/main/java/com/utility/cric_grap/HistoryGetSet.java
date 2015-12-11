@@ -5,40 +5,40 @@ package com.utility.cric_grap;
  */
 public class HistoryGetSet {
 
-    private static String TEAMA;
-    private static String TEAMB;
-    private static String INNINGS;
-    private static String OVER;
+    private String TEAMA;
+    private String TEAMB;
+    private String INNINGS;
+    private String OVER;
 
     public String getTEAMA() {
         return TEAMA;
     }
 
-    public static void setTEAMA(String TEAMA) {
-        HistoryGetSet.TEAMA = TEAMA;
+    public void setTEAMA(String TEAMA) {
+        this.TEAMA = TEAMA;
     }
 
     public String getTEAMB() {
         return TEAMB;
     }
 
-    public static void setTEAMB(String TEAMB) {
-        HistoryGetSet.TEAMB = TEAMB;
+    public void setTEAMB(String TEAMB) {
+        this.TEAMB = TEAMB;
     }
 
     public String getINNINGS() {
         return INNINGS;
     }
 
-    public static void setINNINGS(String INNINGS) {
-        HistoryGetSet.INNINGS = INNINGS;
+    public void setINNINGS(String INNINGS) {
+        this.INNINGS = INNINGS;
     }
 
     public String getOVER() {
         return OVER;
     }
 
-    public static void setOVER(String OVER) {
-        HistoryGetSet.OVER = OVER;
+    public void setOVER(String OVER) {
+        this.OVER = OVER;
     }
 }

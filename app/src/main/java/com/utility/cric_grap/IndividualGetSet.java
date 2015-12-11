@@ -5,31 +5,31 @@ package com.utility.cric_grap;
  */
 public class IndividualGetSet {
 
-    private static String PLAYERNAME;
-    private static String BALL_NUMBER;
-    private static String SCORE;
+    private String PLAYERNAME;
+    private String BALL_NUMBER;
+    private String SCORE;
 
     public String getPLAYERNAME() {
         return PLAYERNAME;
     }
 
-    public static void setPLAYERNAME(String PLAYERNAME) {
-        IndividualGetSet.PLAYERNAME = PLAYERNAME;
+    public void setPLAYERNAME(String PLAYERNAME) {
+        this.PLAYERNAME = PLAYERNAME;
     }
 
-    public String getBallNumber() {
+    public String getBALL_NUMBER() {
         return BALL_NUMBER;
     }
 
-    public static void setBallNumber(String ballNumber) {
-        BALL_NUMBER = ballNumber;
+    public void setBALL_NUMBER(String BALL_NUMBER) {
+        this.BALL_NUMBER = BALL_NUMBER;
     }
 
     public String getSCORE() {
         return SCORE;
     }
 
-    public static void setSCORE(String SCORE) {
-        IndividualGetSet.SCORE = SCORE;
+    public void setSCORE(String SCORE) {
+        this.SCORE = SCORE;
     }
 }

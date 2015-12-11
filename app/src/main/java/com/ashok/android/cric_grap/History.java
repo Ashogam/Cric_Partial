@@ -19,6 +19,9 @@ import com.sqlite.cric_grap.Player_Score_Information;
 import com.utility.cric_grap.Custom_History_ListView;
 import com.utility.cric_grap.HistoryGetSet;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -29,6 +32,7 @@ public class History extends AppCompatActivity {
     LinearLayout failedMessage,listTitle;
     Custom_History_ListView history_listView;
     ListView listHistory;
+    ArrayList<HistoryGetSet> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +89,30 @@ public class History extends AppCompatActivity {
                     new AsyncTask<Void,Void,ArrayList<HistoryGetSet>>(){
 
                         @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            arrayList=new ArrayList<HistoryGetSet>();
+                        }
+
+                        @Override
                         protected ArrayList<HistoryGetSet> doInBackground(Void... params) {
                             try{
                                 information.open();
-                                ArrayList<HistoryGetSet> historyGetSet=information.searchList(date);
-                                return historyGetSet;
+                                JSONArray array=information.searchList(date);
+                                Log.w("arrayyyy",array.toString());
+                                for(int i=0;i<array.length();i++){
+                                    JSONObject jsonObject=array.getJSONObject(i);
+                                    HistoryGetSet history=new HistoryGetSet();
+                                    Log.w("arrayyyy",jsonObject.getString("TeamA"));
+                                    Log.w("arrayyyy",jsonObject.getString("TeamB"));
+                                    Log.w("arrayyyy",jsonObject.getString("Innings"));
+                                    history.setTEAMA(jsonObject.getString("TeamA"));
+                                    history.setTEAMB(jsonObject.getString("TeamB"));
+                                    history.setINNINGS(jsonObject.getString("Innings"));
+                                    history.setOVER(jsonObject.getString("Total_Over"));
+                                    arrayList.add(history);
+                                }
+                                return arrayList;
                             }catch (Exception e){
                                 e.printStackTrace();
                             }finally {
