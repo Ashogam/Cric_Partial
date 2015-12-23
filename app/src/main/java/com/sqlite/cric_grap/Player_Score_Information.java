@@ -31,7 +31,8 @@ public class Player_Score_Information {
     private Context context;
     DBHelper dbHelper = null;
     public static SQLiteDatabase sqLiteDatabase = null;
-    ArrayList<HistoryGetSet> sets=new ArrayList<>();;
+    ArrayList<HistoryGetSet> sets=new ArrayList<>();
+    public static int changeButtonState;
 
     public Player_Score_Information(Context context) {
         this.context = context;
@@ -78,11 +79,31 @@ public class Player_Score_Information {
 
     }
 
+    public long updateScore(String playerName, String ball_Number, String Score, String innings, String created_Date){
+
+        ContentValues contentValues = new ContentValues();
+        if(Score.equalsIgnoreCase("WK")){
+            contentValues.put(DBHelper.SCORE, Score);
+        }else{
+            int score_num = Integer.parseInt(Score);
+            contentValues.put(DBHelper.SCORE, score_num);
+        }
+
+        contentValues.put(DBHelper.PLAYER_NAME, playerName);
+        long id=sqLiteDatabase.update(DBHelper.TABLE_NAME,contentValues,DBHelper.BALL_NUMBER+" =? AND "+DBHelper.INNINGS+" =? AND "+DBHelper.DATE+" =?",new String[]{ball_Number,innings,created_Date});
+        Log.e("return ID",id+" long id");
+        if(id<0){
+            Toast.makeText(context, ball_Number+" is failed to Update", Toast.LENGTH_SHORT).show();
+        }
+        return id;
+
+    }
+
     public JSONArray showOnList(String innings,String dates) throws JSONException {
         JSONArray jsonArray=new JSONArray();
         ArrayList<IndividualGetSet> getSets=null;
-        Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM "+DBHelper.TABLE_NAME+" WHERE "+DBHelper.INNINGS+"='"+innings+"' AND "+DBHelper.DATE+"='"+dates+"'",null);
-        Log.w("cuesor",cursor.getCount()+"");
+        Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME + " WHERE " + DBHelper.INNINGS + "='" + innings + "' AND " + DBHelper.DATE + "='" + dates + "'", null);
+        Log.w("cuesor", cursor.getCount() + "");
 
         if(cursor.moveToFirst()){
             getSets=new ArrayList<>();
@@ -95,7 +116,30 @@ public class Player_Score_Information {
                 jsonObject.put("Score", cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)));
                 jsonArray.put(jsonObject);
             }while (cursor.moveToNext());
-            Log.w("cuesor",jsonArray.toString());
+            Log.w("cuesor", jsonArray.toString());
+            return jsonArray;
+        }
+        return null;
+    }
+
+    public JSONArray showOnExtraList(String innings,String dates) throws JSONException {
+        JSONArray jsonArray=new JSONArray();
+        ArrayList<IndividualGetSet> getSets=null;
+        Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM " + DBHelper.TABLE_EXTRA_NAME + " WHERE " + DBHelper.INNINGS + "='" + innings + "' AND " + DBHelper.DATE + "='" + dates + "'", null);
+        Log.w("cuesor", cursor.getCount() + "");
+
+        if(cursor.moveToFirst()){
+            getSets=new ArrayList<>();
+            Log.w("cuesor","________"+cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME))+"");
+
+            do{
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("PlayerName", cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME)));
+                jsonObject.put("Ball_number", cursor.getString(cursor.getColumnIndex(DBHelper.BALL_NUMBER)));
+                jsonObject.put("Score", cursor.getString(cursor.getColumnIndex(DBHelper.EXTRA_RUN)));
+                jsonArray.put(jsonObject);
+            }while (cursor.moveToNext());
+            Log.w("cuesor", jsonArray.toString());
             return jsonArray;
         }
         return null;
@@ -146,7 +190,7 @@ public class Player_Score_Information {
         Log.w("get", innings + " " + date + " " + ball_num);
         Cursor cursor=sqLiteDatabase.rawQuery("select "+DBHelper.PLAYER_NAME+","+DBHelper.SCORE+" from "+DBHelper.TABLE_NAME+" where "+DBHelper.INNINGS+"='"+innings+"' and "+DBHelper.DATE+"='"+date+"' and "+DBHelper.BALL_NUMBER+"='"+ball_num+"'",null);
         Log.e("checkSet",cursor.getCount()+"");
-
+        changeButtonState=cursor.getCount();
         if(cursor.moveToFirst()){
             Log.e("checkSet",cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME)));
             Log.e("checkSet",cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)));
@@ -154,6 +198,12 @@ public class Player_Score_Information {
             ret[1]=cursor.getString(cursor.getColumnIndex(DBHelper.SCORE));
         }
         return ret;
+    }
+
+    public void combineTableSet(){
+        String query="SELECT * FROM (SELECT "+DBHelper.PLAYER_NAME+",'Actual' as SCORE_TYPE,"+DBHelper.BALL_NUMBER+",SCORE,INNINGS,CREATED_DATE FROM "+DBHelper.TABLE_NAME+" UNION SELECT PLAYER_NAME,'Extra',BALL_NUMBER,EXTRA_SCORE,INNINGS,CREATED_DATE FROM "+DBHelper.TABLE_EXTRA_NAME+") T1 WHERE INNINGS='1' AND CREATED_DATE='2015/12/10' ORDER BY CREATED_DATE,INNINGS,BALL_NUMBER";
+        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+        Log.d("Mine",cursor.getCount()+"");
     }
 
     public String ongoingOver(String created_date, String innings) {
@@ -205,11 +255,17 @@ public class Player_Score_Information {
 
     public long insertScore(String playerName, String ball_Number, String Score, String innings, String created_Date) {
         Log.e("Scpre",Score+"");
-        int score_num = Integer.parseInt(Score);
+
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.PLAYER_NAME, playerName);
         contentValues.put(DBHelper.BALL_NUMBER, ball_Number);
-        contentValues.put(DBHelper.SCORE, score_num);
+        if(Score.equalsIgnoreCase("WK")){
+            contentValues.put(DBHelper.SCORE, Score);}
+        else{
+            int score_num = Integer.parseInt(Score);
+            contentValues.put(DBHelper.SCORE, score_num);
+        }
         contentValues.put(DBHelper.INNINGS, innings);
         contentValues.put(DBHelper.DATE, created_Date);
 
@@ -228,7 +284,7 @@ public class Player_Score_Information {
         contentValues.put(DBHelper.INNINGS,innings);
         contentValues.put(DBHelper.DATE,created_Date);
         contentValues.put(DBHelper.TEAM_A,teamA);
-        contentValues.put(DBHelper.TEAM_B,teamB);
+        contentValues.put(DBHelper.TEAM_B, teamB);
         long id=sqLiteDatabase.insert(DBHelper.TABLE_DASH_NAME,DBHelper.INNINGS,contentValues);
         return id;
     }
@@ -243,6 +299,20 @@ public class Player_Score_Information {
 
         long id = sqLiteDatabase.insert(DBHelper.TABLE_EXTRA_NAME, DBHelper.BALL_NUMBER, contentValues);
         return id;
+
+    }
+
+    public void UpdateExtraScore(String playerName, String ball_Number, String extra_Score, String innings, String created_Date) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBHelper.PLAYER_NAME, playerName);
+        contentValues.put(DBHelper.BALL_NUMBER, ball_Number);
+        contentValues.put(DBHelper.EXTRA_RUN, extra_Score);
+        long id = sqLiteDatabase.update(DBHelper.TABLE_EXTRA_NAME, contentValues, DBHelper.BALL_NUMBER+" =? AND "+DBHelper.INNINGS+" =? AND "+DBHelper.DATE+" =?",new String[]{ball_Number,innings,created_Date});
+        if(id>0){
+            Toast.makeText(context, "Score updated", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, ball_Number+" Score failed to update", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

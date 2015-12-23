@@ -4,16 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="com.ashok.android.cric_grap.IndividualScoreView">
 
     <TextView
         android:id="@+id/failedText"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="No Score Records Found"
@@ -27,14 +24,15 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView
 
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
@@ -46,7 +44,7 @@
         <TextView
 
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
@@ -59,11 +57,23 @@
         <TextView
 
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
             android:text="SCORE"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textColor="@color/BlueViolet" />
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="SCORE TYPE"
             android:textStyle="bold"
             android:typeface="serif"
             android:textColor="@color/BlueViolet" />
@@ -73,9 +83,10 @@
 
     <ListView
         android:id="@+id/individualList"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/Chartreuse"
+        android:divider="@color/Blue"
         android:scrollbarStyle="outsideOverlay"
         android:layout_weight="1">
     </ListView>

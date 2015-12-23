@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -148,6 +149,8 @@ public class DashBoard extends AppCompatActivity
 
     }
 
+
+
     private void setTeaminfo(String[] result){
         if(result!=null){
             txtTeamA.setText(result[0]);
@@ -230,7 +233,10 @@ public class DashBoard extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+
         }
+
+
     }
 
     @Override
@@ -351,6 +357,7 @@ public class DashBoard extends AppCompatActivity
                             over_count = Integer.parseInt(getScore.getText().toString());
                             sharedPreference("over_count", over_count);
                             sharedPreference("innings", Integer.parseInt(MATCH_NUMBER));
+
                             Intent intent = new Intent(DashBoard.this, Select_Over.class);
 
                             if (id == -1) {
@@ -413,5 +420,7 @@ public class DashBoard extends AppCompatActivity
             e.printStackTrace();
         }
     }
+
+
 
 }

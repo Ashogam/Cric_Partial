@@ -12,18 +12,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/action_button"
+        android:layout_marginBottom="5dp"
+        android:padding="10dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:drawable/editbox_dropdown_light_frame"
-            android:gravity="left"
+
+            android:gravity="center_horizontal"
             android:text="Over"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold|italic" />
 
         <TextView
@@ -32,23 +32,29 @@
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_weight="1"
-            android:background="@android:drawable/editbox_dropdown_light_frame"
+
             android:gravity="center"
             android:text="Selection"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold|italic" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:drawable/editbox_dropdown_light_frame"
+
             android:gravity="center"
             android:inputType="number"
             android:text="Score"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold|italic" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/LightBlue"
+        ></View>
 
 
     <ScrollView
@@ -78,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:gravity="left"
+                    android:gravity="center_horizontal"
                     android:padding="3dp"
                     android:text="Over"
                     android:textSize="15sp"
@@ -94,17 +100,17 @@
                     android:popupBackground="@android:color/darker_gray"
                     android:gravity="center" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edtscore1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginRight="2dp"
                     android:layout_weight="1"
-                    android:background="@android:drawable/editbox_background_normal"
+
                     android:gravity="center"
-                    android:hint="Score"
-                    android:inputType="number" />
+                    android:popupBackground="@android:color/darker_gray"
+                     />
             </LinearLayout>
 
             <LinearLayout
@@ -121,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:padding="3dp"
                     android:text="Over"
                     android:textSize="15sp"
@@ -138,16 +144,16 @@
                     android:popupBackground="@android:color/darker_gray"
                     android:text="Selection" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edtscore2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@android:drawable/editbox_background_normal"
+
                     android:gravity="center"
-                    android:hint="Score"
-                    android:inputType="number" />
+                    android:popupBackground="@android:color/darker_gray"
+                     />
             </LinearLayout>
 
             <LinearLayout
@@ -164,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:padding="3dp"
                     android:text="Over"
                     android:textSize="15sp"
@@ -181,16 +187,16 @@
                     android:popupBackground="@android:color/darker_gray"
                     android:text="Selection" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edtscore3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@android:drawable/editbox_background_normal"
+
                     android:gravity="center"
-                    android:hint="Score"
-                    android:inputType="number" />
+                    android:popupBackground="@android:color/darker_gray"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -207,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:padding="3dp"
                     android:text="Over"
                     android:textSize="15sp"
@@ -224,16 +230,16 @@
                     android:popupBackground="@android:color/darker_gray"
                     android:text="Selection" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edtscore4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@android:drawable/editbox_background_normal"
+
                     android:gravity="center"
-                    android:hint="Score"
-                    android:inputType="number" />
+                    android:popupBackground="@android:color/darker_gray"
+                     />
             </LinearLayout>
 
             <LinearLayout
@@ -250,7 +256,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:padding="3dp"
                     android:text="Over"
                     android:textSize="15sp"
@@ -267,16 +273,16 @@
                     android:popupBackground="@android:color/darker_gray"
                     android:text="Selection" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edtscore5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@android:drawable/editbox_background_normal"
+
                     android:gravity="center"
-                    android:hint="Score"
-                    android:inputType="number" />
+                    android:popupBackground="@android:color/darker_gray"
+                     />
             </LinearLayout>
 
             <LinearLayout
@@ -293,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:padding="3dp"
                     android:text="Over"
                     android:textSize="15sp"
@@ -310,16 +316,16 @@
                     android:popupBackground="@android:color/darker_gray"
                     android:text="Selection" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edtscore6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@android:drawable/editbox_background_normal"
+
                     android:gravity="center"
-                    android:hint="Score"
-                    android:inputType="number" />
+                    android:popupBackground="@android:color/darker_gray"
+                    />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -329,8 +335,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Confirm"
-        android:background="@android:drawable/list_selector_background"
-        android:drawableRight="@android:drawable/ic_menu_save">
+        android:layout_margin="10dp"
+        android:background="@drawable/saup_design"
+        android:drawableLeft="@android:drawable/ic_menu_save">
 
     </Button>
 </LinearLayout>

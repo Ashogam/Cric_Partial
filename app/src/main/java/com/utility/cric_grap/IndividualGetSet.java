@@ -8,6 +8,15 @@ public class IndividualGetSet {
     private String PLAYERNAME;
     private String BALL_NUMBER;
     private String SCORE;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getPLAYERNAME() {
         return PLAYERNAME;

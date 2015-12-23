@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by userws49 on 11/11/2015.
@@ -50,6 +52,20 @@ public class Add_player_SqliteManagement {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<String> spinnerName(){
+        ArrayList<String> arrayList=null;
+        Cursor cursor=sqLiteDatabase.rawQuery("SELECT "+DBHelper.NAME+" FROM "+DBHelper.TABLE_NAME,null);
+        if(cursor.moveToFirst()){
+            arrayList=new ArrayList<>();
+            do{
+                Log.e("Name",cursor.getString(cursor.getColumnIndex(DBHelper.NAME)));
+                arrayList.add(cursor.getString(cursor.getColumnIndex(DBHelper.NAME)));
+            }while(cursor.moveToNext());
+        }
+
+        return arrayList;
     }
 
     public Long registration(String userName, String mobileNumber) {

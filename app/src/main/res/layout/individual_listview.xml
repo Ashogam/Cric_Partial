@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/indName"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/indBall"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
@@ -38,12 +38,22 @@
         <TextView
             android:id="@+id/indScore"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
 
             android:text="SCORE" />
+
+        <TextView
+            android:id="@+id/indType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/Red"
+            android:text="Type" />
 
 
     </LinearLayout>

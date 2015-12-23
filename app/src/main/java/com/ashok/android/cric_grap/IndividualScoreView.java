@@ -53,18 +53,39 @@ public class IndividualScoreView extends AppCompatActivity {
             protected ArrayList<IndividualGetSet> doInBackground(Void... params) {
                 try{
                     information.open();
+                    //information.combineTableSet();
                     JSONArray array=information.showOnList(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
-                    Log.w("arrayyyy",array.toString());
-                    for(int i=0;i<array.length();i++){
-                        JSONObject object=array.getJSONObject(i);
-                        IndividualGetSet indi=new IndividualGetSet();
-                        Log.w("arrayyyy",object.getString("PlayerName"));
-                        Log.w("arrayyyy",object.getString("Ball_number"));
-                        Log.w("arrayyyy",object.getString("Score"));
-                        indi.setPLAYERNAME(object.getString("PlayerName"));
-                        indi.setBALL_NUMBER(object.getString("Ball_number"));
-                        indi.setSCORE(object.getString("Score"));
-                        arrayList.add(indi);
+
+                    if(array!=null) {
+                        Log.w("arrayyyy", array.toString());
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            IndividualGetSet indi = new IndividualGetSet();
+                            Log.w("arrayyyy", object.getString("PlayerName"));
+                            Log.w("arrayyyy", object.getString("Ball_number"));
+                            Log.w("arrayyyy", object.getString("Score"));
+                            indi.setPLAYERNAME(object.getString("PlayerName"));
+                            indi.setBALL_NUMBER(object.getString("Ball_number"));
+                            indi.setSCORE(object.getString("Score"));
+                            indi.setType("Regular");
+                            arrayList.add(indi);
+                        }
+                    }
+                    JSONArray array1=information.showOnExtraList(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
+
+                    if(array1!=null) {
+                        for (int i = 0; i < array1.length(); i++) {
+                            JSONObject object = array1.getJSONObject(i);
+                            IndividualGetSet indi = new IndividualGetSet();
+                            Log.w("arrayyyy", object.getString("PlayerName"));
+                            Log.w("arrayyyy", object.getString("Ball_number"));
+                            Log.w("arrayyyy", object.getString("Score"));
+                            indi.setPLAYERNAME(object.getString("PlayerName"));
+                            indi.setBALL_NUMBER(object.getString("Ball_number"));
+                            indi.setSCORE(object.getString("Score"));
+                            indi.setType("Extra");
+                            arrayList.add(indi);
+                        }
                     }
                     return arrayList;
                 }catch (Exception e){
@@ -78,9 +99,9 @@ public class IndividualScoreView extends AppCompatActivity {
             @Override
             protected void onPostExecute(ArrayList<IndividualGetSet> individualGetSets) {
                 super.onPostExecute(individualGetSets);
-                Log.w("PostExecute",""+individualGetSets.size()+"++++++ "+individualGetSets+"");
-                if(individualGetSets!=null){
 
+                if(individualGetSets.size()>0){
+                    Log.w("PostExecute",""+individualGetSets.size()+"++++++ "+individualGetSets+"");
                     failedText.setVisibility(View.GONE);
                     title.setVisibility(View.VISIBLE);
                     individualAdapt=new IndividualAdapt(IndividualScoreView.this,R.layout.individual_listview,individualGetSets);

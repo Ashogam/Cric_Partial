@@ -81,7 +81,7 @@ public class Select_Over extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         Log.d("Click Id","ID++"+v.getId());
         //Toast.makeText(Select_Over.this, String.valueOf(v.getId()-1)+"", Toast.LENGTH_SHORT).show();
-        SELECTED_OVER= String.valueOf(v.getId());
+        SELECTED_OVER= String.valueOf(v.getId()-1);
         Intent intent=new Intent(Select_Over.this,Scorum.class);
         startActivity(intent);
     }

@@ -68,6 +68,7 @@ public class IndividualAdapt extends ArrayAdapter<IndividualGetSet>{
                     holder.indBall.setText(items.get(position).getBALL_NUMBER());
                     holder.indName.setText(items.get(position).getPLAYERNAME());
                     holder.indScore.setText(items.get(position).getSCORE());
+                    holder.indType.setText(items.get(position).getType());
 
                     vi.setOnClickListener(new OnItemClick(position));
                 }
@@ -80,13 +81,13 @@ public class IndividualAdapt extends ArrayAdapter<IndividualGetSet>{
         }
 
         public class Holder {
-            TextView indScore, indName, indBall;
+            TextView indScore, indName, indBall,indType;
 
             public Holder(View vi) {
                 indScore = (TextView) vi.findViewById(R.id.indScore);
                 indName = (TextView) vi.findViewById(R.id.indName);
                 indBall = (TextView) vi.findViewById(R.id.indBall);
-
+                indType= (TextView) vi.findViewById(R.id.indType);
             }
         }
 
