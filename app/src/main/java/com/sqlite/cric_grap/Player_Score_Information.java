@@ -200,10 +200,26 @@ public class Player_Score_Information {
         return ret;
     }
 
-    public void combineTableSet(){
-        String query="SELECT * FROM (SELECT "+DBHelper.PLAYER_NAME+",'Actual' as SCORE_TYPE,"+DBHelper.BALL_NUMBER+",SCORE,INNINGS,CREATED_DATE FROM "+DBHelper.TABLE_NAME+" UNION SELECT PLAYER_NAME,'Extra',BALL_NUMBER,EXTRA_SCORE,INNINGS,CREATED_DATE FROM "+DBHelper.TABLE_EXTRA_NAME+") T1 WHERE INNINGS='1' AND CREATED_DATE='2015/12/10' ORDER BY CREATED_DATE,INNINGS,BALL_NUMBER";
+    public void combineTableSet(String innings,String given_date) throws JSONException {
+        JSONArray jsonArray=new JSONArray();
+        String query="SELECT * FROM (SELECT "+DBHelper.PLAYER_NAME+",'Actual' as SCORE_TYPE,"+DBHelper.BALL_NUMBER+",SCORE,INNINGS,CREATED_DATE FROM "+DBHelper.TABLE_NAME+" UNION ALL SELECT PLAYER_NAME,'Extra',BALL_NUMBER,EXTRA_SCORE,INNINGS,CREATED_DATE FROM "+DBHelper.TABLE_EXTRA_NAME+") T1 WHERE INNINGS='"+innings+"' AND CREATED_DATE='"+given_date+"' ORDER BY CREATED_DATE,INNINGS,BALL_NUMBER";
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         Log.d("Mine",cursor.getCount()+"");
+        if (cursor.moveToFirst()) {
+            do {
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("Player_Name",cursor.getString(cursor.getColumnIndex(DBHelper.PLAYER_NAME)));
+                jsonObject.put("BALL_NUM",cursor.getString(cursor.getColumnIndex(DBHelper.BALL_NUMBER)));
+                jsonObject.put("SCORE",cursor.getString(cursor.getColumnIndex(DBHelper.SCORE)));
+                jsonObject.put("INNINGS",cursor.getString(cursor.getColumnIndex(DBHelper.INNINGS)));
+                jsonObject.put("DATE",cursor.getString(cursor.getColumnIndex(DBHelper.DATE)));
+                jsonArray.put(jsonObject);
+            }while (cursor.moveToNext());
+            cursor.close();
+            Log.e("Mine Json",jsonArray.toString());
+        } else {
+
+        }
     }
 
     public String ongoingOver(String created_date, String innings) {

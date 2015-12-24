@@ -53,7 +53,7 @@ public class IndividualScoreView extends AppCompatActivity {
             protected ArrayList<IndividualGetSet> doInBackground(Void... params) {
                 try{
                     information.open();
-                    //information.combineTableSet();
+                    information.combineTableSet(Custom_History_ListView.items.get(mpos).getINNINGS(),dates);
                     JSONArray array=information.showOnList(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
 
                     if(array!=null) {
