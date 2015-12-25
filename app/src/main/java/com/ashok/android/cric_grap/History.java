@@ -27,9 +27,9 @@ import java.util.Calendar;
 
 public class History extends AppCompatActivity {
     protected static EditText chooseDate;
-    private Button searchDate,showAll;
+    private Button searchDate, showAll;
     private Player_Score_Information information;
-    LinearLayout failedMessage,listTitle;
+    LinearLayout failedMessage, listTitle;
     Custom_History_ListView history_listView;
     ListView listHistory;
     ArrayList<HistoryGetSet> arrayList;
@@ -57,24 +57,24 @@ public class History extends AppCompatActivity {
 
     private void init() {
 
-        chooseDate= (EditText) findViewById(R.id.chooseDate);
-        searchDate= (Button) findViewById(R.id.searchDate);
-        showAll= (Button) findViewById(R.id.showAll);
+        chooseDate = (EditText) findViewById(R.id.chooseDate);
+        searchDate = (Button) findViewById(R.id.searchDate);
+        showAll = (Button) findViewById(R.id.showAll);
         chooseDate.setInputType(InputType.TYPE_NULL);
-        failedMessage= (LinearLayout) findViewById(R.id.failedMessage);
-        listTitle= (LinearLayout) findViewById(R.id.listTitle);
-        information=new Player_Score_Information(History.this);
-        listHistory= (ListView) findViewById(R.id.listHistory);
+        failedMessage = (LinearLayout) findViewById(R.id.failedMessage);
+        listTitle = (LinearLayout) findViewById(R.id.listTitle);
+        information = new Player_Score_Information(History.this);
+        listHistory = (ListView) findViewById(R.id.listHistory);
 
     }
 
-    private void OnClickListen(){
+    private void OnClickListen() {
         chooseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(getFragmentManager(),"string");
+                newFragment.show(getFragmentManager(), "string");
             }
         });
 
@@ -82,63 +82,84 @@ public class History extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(TextUtils.isEmpty(chooseDate.getText().toString())){
+                if (TextUtils.isEmpty(chooseDate.getText().toString())) {
                     chooseDate.setError("Choose Date");
-                }else{
-                    final String date=chooseDate.getText().toString();
-                    new AsyncTask<Void,Void,ArrayList<HistoryGetSet>>(){
-
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                            arrayList=new ArrayList<HistoryGetSet>();
-                        }
-
-                        @Override
-                        protected ArrayList<HistoryGetSet> doInBackground(Void... params) {
-                            try{
-                                information.open();
-                                JSONArray array=information.searchList(date);
-                                Log.w("arrayyyy",array.toString());
-                                for(int i=0;i<array.length();i++){
-                                    JSONObject jsonObject=array.getJSONObject(i);
-                                    HistoryGetSet history=new HistoryGetSet();
-                                    Log.w("arrayyyy",jsonObject.getString("TeamA"));
-                                    Log.w("arrayyyy",jsonObject.getString("TeamB"));
-                                    Log.w("arrayyyy",jsonObject.getString("Innings"));
-                                    history.setTEAMA(jsonObject.getString("TeamA"));
-                                    history.setTEAMB(jsonObject.getString("TeamB"));
-                                    history.setINNINGS(jsonObject.getString("Innings"));
-                                    history.setOVER(jsonObject.getString("Total_Over"));
-                                    arrayList.add(history);
-                                }
-                                return arrayList;
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }finally {
-                                information.close();
-                            }
-                            return null;
-                        }
-
-                        @Override
-                        protected void onPostExecute(ArrayList<HistoryGetSet> historyGetSet) {
-                            super.onPostExecute(historyGetSet);
-                            if(historyGetSet!=null){
-                                failedMessage.setVisibility(View.GONE);
-                                listTitle.setVisibility(View.VISIBLE);
-                                history_listView=new Custom_History_ListView(History.this,R.layout.customlistview,historyGetSet);
-                                listHistory.setAdapter(history_listView);
-                            }else{
-                                failedMessage.setVisibility(View.VISIBLE);
-                                listTitle.setVisibility(View.GONE);
-                            }
-                        }
-                    }.execute();
+                } else {
+                    final String date = chooseDate.getText().toString();
+                    setDataDoinBack(date);
                 }
+            }
+        });
+
+        showAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDataDoinBack("getAll");
 
             }
         });
+
+    }
+
+    public void setDataDoinBack(String date_search) {
+
+        new AsyncTask<String, Void, ArrayList<HistoryGetSet>>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                arrayList = new ArrayList<HistoryGetSet>();
+            }
+
+            @Override
+            protected ArrayList<HistoryGetSet> doInBackground(String... params) {
+                try {
+                    information.open();
+                    JSONArray array = information.searchList(params[0]);
+                    if(array!=null) {
+                        Log.w("arrayyyy", array.toString());
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject jsonObject = array.getJSONObject(i);
+                            HistoryGetSet history = new HistoryGetSet();
+                            Log.w("arrayyyy", jsonObject.getString("TeamA"));
+                            Log.w("arrayyyy", jsonObject.getString("TeamB"));
+                            Log.w("arrayyyy", jsonObject.getString("Innings"));
+                            Log.w("arrayyyy", jsonObject.getString("Date"));
+                            history.setTEAMA(jsonObject.getString("TeamA"));
+                            history.setTEAMB(jsonObject.getString("TeamB"));
+                            history.setINNINGS(jsonObject.getString("Innings"));
+                            history.setOVER(jsonObject.getString("Total_Over"));
+                            history.setDATE(jsonObject.getString("Date"));
+                            arrayList.add(history);
+                        }
+
+                        return arrayList;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    information.close();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<HistoryGetSet> historyGetSet) {
+                super.onPostExecute(historyGetSet);
+                if (historyGetSet != null) {
+                    failedMessage.setVisibility(View.GONE);
+                    listTitle.setVisibility(View.VISIBLE);
+                    listHistory.setVisibility(View.VISIBLE);
+                    history_listView = new Custom_History_ListView(History.this, R.layout.customlistview, historyGetSet);
+                    listHistory.setAdapter(history_listView);
+                } else {
+                    failedMessage.setVisibility(View.VISIBLE);
+                    listTitle.setVisibility(View.GONE);
+                    listHistory.setVisibility(View.GONE);
+                }
+            }
+        }.execute(date_search);
+
 
     }
 
@@ -160,11 +181,11 @@ public class History extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
             Log.e("Date", year + "/" + (month + 1) + "/" + day);
-            if(String.valueOf(day).length()>1){
-                chooseDate.setText(year+"/"+(month+1)+"/"+day);
-            }else{
+            if (String.valueOf(day).length() > 1) {
+                chooseDate.setText(year + "/" + (month + 1) + "/" + day);
+            } else {
 
-                chooseDate.setText(year+"/"+(month+1)+"/0"+day);
+                chooseDate.setText(year + "/" + (month + 1) + "/0" + day);
             }
 
         }

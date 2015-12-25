@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,7 @@ public class Add_player extends AppCompatActivity {
     ArrayList<Player_Info> player_infos;
     private String mNum = null;
     View focusView = null;
+    int sdk = android.os.Build.VERSION.SDK_INT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,8 @@ public class Add_player extends AppCompatActivity {
                 ArrayAdapter<String> adapter =
                         new ArrayAdapter<String>(Add_player.this,
                                 android.R.layout.simple_spinner_dropdown_item, contactNumber);
-                mNumber.setAdapter(adapter);
+                if(!(sdk==Build.VERSION_CODES.KITKAT))
+                    mNumber.setAdapter(adapter);
 
                 List<String> contactName = new ArrayList<>(str);
                 Log.e("DisplayName Preference", "Result "  + contactName.size());
@@ -80,12 +83,14 @@ public class Add_player extends AppCompatActivity {
                 ArrayAdapter<String> adapt =
                         new ArrayAdapter<String>(Add_player.this,
                                 android.R.layout.simple_spinner_dropdown_item, contactName);
-                mName.setAdapter(adapt);
+
+                if(!(sdk==Build.VERSION_CODES.KITKAT))
+                    mName.setAdapter(adapt);
 
             } else {
 
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
            new ContactFetchTask().execute();
         }
@@ -132,45 +137,48 @@ public class Add_player extends AppCompatActivity {
     }
 
     public Set<String> contactNumberAutoDoTask() {
+        try {
+            Cursor cursor = getContacts();
+            Set<String> contact = new HashSet<String>();
 
-        Cursor cursor = getContacts();
-        Set<String> contact = new HashSet<String>();
+            while (cursor != null && cursor.moveToNext()) {
+                //String contactNumber=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Log.d("Result ID", cursor.getCount() + "" + cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID)));
+                Log.d("Result DisplayName", cursor.getCount() + "" + cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+                //Adding all display name in the sets
+                display_Name.add(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+                Log.e("Adding", "Display_Name" + display_Name.toString());
+                Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
 
-        while (cursor != null && cursor.moveToNext()) {
-            //String contactNumber=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            Log.d("Result ID", cursor.getCount() + "" + cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID)));
-            Log.d("Result DisplayName", cursor.getCount() + "" + cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-            //Adding all display name in the sets
-            display_Name.add(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-            Log.e("Adding", "Display_Name" + display_Name.toString());
-            Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                                ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
+                                ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
 
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
-                            ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
-                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
+                        new String[]{cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))},
+                        null);
+                cursorPhone.moveToFirst();
+                while (!cursorPhone.isAfterLast()) {
+                    contact.add(cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                    cursorPhone.moveToNext();
 
-                    new String[]{cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))},
-                    null);
-            cursorPhone.moveToFirst();
-            while (!cursorPhone.isAfterLast()) {
-                contact.add(cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                cursorPhone.moveToNext();
-
-            }
+                }
 
             /*if (cursorPhone.moveToFirst()) {
                String contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 Log.d("Result_mobile", "Contact Phone Number: " + contactNumber);
             }
 */
-            cursorPhone.close();
+                cursorPhone.close();
 
-
+                return contact;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
+        return null;
 
-        return contact;
 
     }
 
@@ -218,7 +226,7 @@ public class Add_player extends AppCompatActivity {
             long result = 0;
             add_player_sqliteManagement = new Add_player_SqliteManagement(Add_player.this);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
                 add_player_sqliteManagement.open();
                 result = add_player_sqliteManagement.registration(params[0], params[1]);
                 Log.d("Result Database", "result :" + result);
@@ -239,34 +247,38 @@ public class Add_player extends AppCompatActivity {
         protected void onPostExecute(Long aVoid) {
             super.onPostExecute(aVoid);
             myProgressDialog.dismiss();
-
-            Log.d("OnPostExecuteMethod", "aVoid" + aVoid);
-            if (aVoid > 0) {
-                Toast.makeText(Add_player.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
-                Add_player_SqliteManagement management = new Add_player_SqliteManagement(Add_player.this);
-                management.open();
-                try {
-                    JSONArray jsonArray = management.getdetails();
-                    if (jsonArray.length() > 0) {
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            Player_Info player_info = new Player_Info();
-                            player_info.setPlayer_name(jsonObject.getString("player_name"));
-                            player_info.setPlayer_mobile_number(jsonObject.getString("player_number"));
-                            Log.i("Json feed", jsonObject.getString("player_name") + "_____" + jsonObject.getString("player_number"));
-                            player_infos.add(player_info);
+            try {
+                Log.d("OnPostExecuteMethod", "aVoid" + aVoid);
+                if (aVoid > 0) {
+                    Toast.makeText(Add_player.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                    Add_player_SqliteManagement management = new Add_player_SqliteManagement(Add_player.this);
+                    management.open();
+                    try {
+                        JSONArray jsonArray = management.getdetails();
+                        if (jsonArray.length() > 0) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                Player_Info player_info = new Player_Info();
+                                player_info.setPlayer_name(jsonObject.getString("player_name"));
+                                player_info.setPlayer_mobile_number(jsonObject.getString("player_number"));
+                                Log.i("Json feed", jsonObject.getString("player_name") + "_____" + jsonObject.getString("player_number"));
+                                player_infos.add(player_info);
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    management.close();
+                } else if (aVoid == -1) {
+                    Toast.makeText(Add_player.this, "Already Registered", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Add_player.this, "Save Denied! DataBase Error", Toast.LENGTH_SHORT).show();
                 }
-                management.close();
-            } else if (aVoid == -1) {
-                Toast.makeText(Add_player.this, "Already Registered", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(Add_player.this, "Save Denied! DataBase Error", Toast.LENGTH_SHORT).show();
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
+
 
 
     }
@@ -286,27 +298,37 @@ public class Add_player extends AppCompatActivity {
         @Override
         protected void onPostExecute(Set<String> strings) {
             super.onPostExecute(strings);
-            addContactToAutoComplete(strings);
+            if(strings!=null) {
+                addContactToAutoComplete(strings);
+            }
         }
     }
 
     private void sharedPreference(Set<String> contactCollection, String fileName, String PreferenceName) {
-        Log.v("Files", "Details " + contactCollection);
-        SharedPreferences sharedPreferences = getSharedPreferences(PreferenceName, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putStringSet(fileName, contactCollection);
-        editor.commit();
+        try {
+            Log.v("Files", "Details " + contactCollection);
+            SharedPreferences sharedPreferences = getSharedPreferences(PreferenceName, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putStringSet(fileName, contactCollection);
+            editor.commit();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void addContactToAutoComplete(Set<String> contactCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        sharedPreference(contactCollection, "contact", "Contacts");
-        Log.v("DisplayName sha", display_Name.size() + "++++++++++++++++++++++++++++ ");
-        Log.v("DisplayName error", display_Name.toString() + "++++++++++++++++++++++++++++ ");
-        SharedPreferences preferences=getSharedPreferences("myContact",MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
-        editor.putStringSet("key", display_Name);
-        editor.apply();
+        try {
+            sharedPreference(contactCollection, "contact", "Contacts");
+            Log.v("DisplayName sha", display_Name.size() + "++++++++++++++++++++++++++++ ");
+            Log.v("DisplayName error", display_Name.toString() + "++++++++++++++++++++++++++++ ");
+            SharedPreferences preferences = getSharedPreferences("myContact", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putStringSet("key", display_Name);
+            editor.apply();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
     }
 

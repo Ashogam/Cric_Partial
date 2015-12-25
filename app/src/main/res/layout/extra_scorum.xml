@@ -2,75 +2,79 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:windowSoftInputMode="stateHidden"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:windowSoftInputMode="stateHidden">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/extra_boder"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <Spinner
+            android:id="@+id/extra_ball"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/extra_boder"
-            android:orientation="horizontal"
-            android:padding="3dp">
+            android:layout_gravity="center"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:popupBackground="@color/WhiteSmoke" />
 
-            <EditText
-                android:id="@+id/extra_ball"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:background="@android:drawable/editbox_background_normal"
-                android:gravity="center"
-                android:hint="Ball"
-                android:inputType="numberDecimal" />
-
-            <Spinner
-                android:id="@+id/extra_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:popupBackground="@android:color/darker_gray" />
-
-            <EditText
-                android:id="@+id/extra_edtscore"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:background="@android:drawable/editbox_background_normal"
-                android:gravity="center"
-                android:hint="Score"
-                android:inputType="number" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/extra_spinner"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:popupBackground="@android:color/darker_gray" />
 
-            <Button
-                android:id="@+id/btn_enter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Enter" />
+        <Spinner
+            android:id="@+id/extra_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:popupBackground="@android:color/darker_gray" />
 
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cancel" />
-        </LinearLayout>
+        <Spinner
+            android:id="@+id/extra_edtscore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:popupBackground="@color/WhiteSmoke" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/btn_enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Enter" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+    </LinearLayout>
 
 
 </LinearLayout>

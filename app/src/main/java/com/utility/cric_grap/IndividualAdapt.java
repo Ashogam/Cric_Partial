@@ -68,8 +68,16 @@ public class IndividualAdapt extends ArrayAdapter<IndividualGetSet>{
                     holder.indBall.setText(items.get(position).getBALL_NUMBER());
                     holder.indName.setText(items.get(position).getPLAYERNAME());
                     holder.indScore.setText(items.get(position).getSCORE());
+                    if(items.get(position).getType().equalsIgnoreCase("regular"))
+                        holder.indType.setTextColor(context.getResources().getColor(R.color.Chartreuse));
+                    if(items.get(position).getType().equalsIgnoreCase("wide"))
+                        holder.indType.setTextColor(context.getResources().getColor(R.color.Azure));
+                    if(items.get(position).getType().equalsIgnoreCase("noball"))
+                        holder.indType.setTextColor(context.getResources().getColor(R.color.Red));
+                    if(items.get(position).getType().equalsIgnoreCase("overthrow"))
+                        holder.indType.setTextColor(context.getResources().getColor(R.color.OrangeRed));
                     holder.indType.setText(items.get(position).getType());
-
+                    holder.indinnings.setText(items.get(position).getInnings());
                     vi.setOnClickListener(new OnItemClick(position));
                 }
                 return vi;
@@ -81,13 +89,15 @@ public class IndividualAdapt extends ArrayAdapter<IndividualGetSet>{
         }
 
         public class Holder {
-            TextView indScore, indName, indBall,indType;
+            TextView indScore, indName, indBall,indType,indinnings;
 
             public Holder(View vi) {
                 indScore = (TextView) vi.findViewById(R.id.indScore);
                 indName = (TextView) vi.findViewById(R.id.indName);
                 indBall = (TextView) vi.findViewById(R.id.indBall);
                 indType= (TextView) vi.findViewById(R.id.indType);
+                indinnings=(TextView) vi.findViewById(R.id.indinnings);
+
             }
         }
 

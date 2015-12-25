@@ -55,8 +55,12 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
     String extra_ball;
     String extra_score;
     String extra_spinner;
+    String extra_type_value;
     ArrayAdapter<String> editSpinAdapter;
     private static String[] editScoreSpin = {"0", "1", "2", "3", "4", "6", "WK"};
+    ArrayAdapter<String> perOverBall;
+
+
 
 
     @Override
@@ -195,20 +199,10 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
         if (individualBall.size() > 0) {
             Log.e("Invidiual", "Value individual " + individualBall.size());
             ball1.setText(individualBall.get(0));
-
-
             ball2.setText(individualBall.get(1));
-
-
             ball3.setText(individualBall.get(2));
-
-
             ball4.setText(individualBall.get(3));
-
-
             ball5.setText(individualBall.get(4));
-
-
             ball6.setText(individualBall.get(5));
 
         }
@@ -311,6 +305,7 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
         ba4 = ball4.getText().toString();
         ba5 = ball5.getText().toString();
         ba6 = ball6.getText().toString();
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         created_Date = dateFormat.format(date);
@@ -400,6 +395,11 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
         if (id == R.id.extra) {
             try {
 
+                String[] typeExtra={"Wide","NoBall","OverThrow"};
+                String[] perOver_ball={individualBall.get(0),individualBall.get(1),individualBall.get(2),individualBall.get(3),individualBall.get(4),individualBall.get(5)};
+
+                Log.d("perball_over",individualBall.get(0)+individualBall.get(1)+individualBall.get(3));
+                String[] doEnter = {"1", "2", "3", "4", "5","6"};
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 Date date = new Date();
                 created_Date = dateFormat.format(date);
@@ -410,10 +410,15 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
 
                 alertDialogBuilder.setContentView(promptView);
                 alertDialogBuilder.setTitle("LOAD EXTRA SCORE");
-                final EditText ext_ball = (EditText) promptView.findViewById(R.id.extra_ball);
-                final EditText ext_score = (EditText) promptView.findViewById(R.id.extra_edtscore);
+                final Spinner ext_ball = (Spinner) promptView.findViewById(R.id.extra_ball);
+                final Spinner ext_score = (Spinner) promptView.findViewById(R.id.extra_edtscore);
                 final Spinner spin = (Spinner) promptView.findViewById(R.id.extra_spinner);
+                final Spinner extra_type = (Spinner) promptView.findViewById(R.id.extra_type);
+                ext_ball.setAdapter(extraAdapeter(perOver_ball));
+                extra_type.setAdapter(extraAdapeter(typeExtra));
+                ext_score.setAdapter(extraAdapeter(doEnter));
                 spin.setAdapter(dataAdapter);
+
                 Button enter = (Button) promptView.findViewById(R.id.btn_enter);
                 Button cancel = (Button) promptView.findViewById(R.id.btn_cancel);
                 alertDialogBuilder.setTitle("Enter Over");
@@ -423,17 +428,16 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
                 enter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        extra_ball = ext_ball.getText().toString();
-                        extra_score = ext_score.getText().toString();
+                        extra_ball = ext_ball.getSelectedItem().toString();
+                        extra_score = ext_score.getSelectedItem().toString();
                         extra_spinner = spin.getSelectedItem().toString();
-
-                        ext_ball.setError(null);
+                        extra_type_value = extra_type.getSelectedItem().toString();
                         View focusView = null;
-                        if (!TextUtils.isEmpty(extra_ball) && !TextUtils.isEmpty(extra_score) && !TextUtils.isEmpty(extra_spinner)) {
+                        if (!TextUtils.isEmpty(extra_ball) && !TextUtils.isEmpty(extra_score)) {
                             Toast.makeText(Scorum.this, extra_ball + " " + extra_score + " " + extra_spinner, Toast.LENGTH_SHORT).show();
                             try {
                                 scoreInformation.open();
-                                long result = scoreInformation.inserExtraScore(extra_spinner, extra_ball, extra_score, DashBoard.MATCH_NUMBER, created_Date);
+                                long result = scoreInformation.inserExtraScore(extra_spinner, extra_ball, extra_score, DashBoard.MATCH_NUMBER, created_Date,extra_type_value);
                                 if (result > 0) {
                                     Toast.makeText(Scorum.this, "Score Saved", Toast.LENGTH_SHORT).show();
                                 } else if (result == -1) {
@@ -461,13 +465,6 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
                                 scoreInformation.close();
                             }
                             alertDialogBuilder.dismiss();
-                        } else {
-                            if (TextUtils.isEmpty(extra_ball)) {
-                                ext_ball.setError("Please specify the over");
-                            }
-                            if (TextUtils.isEmpty(extra_score)) {
-                                ext_score.setError("Please specify the over");
-                            }
                         }
                     }
                 });
@@ -486,6 +483,15 @@ public class Scorum extends AppCompatActivity implements OnItemSelectedListener 
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public ArrayAdapter<String> extraAdapeter(String[] value){
+        ArrayAdapter<String> aAdapter = new ArrayAdapter<String>(Scorum.this,
+                android.R.layout.simple_spinner_item, value);
+        aAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return aAdapter;
+    }
+
+
 
     class StoreData extends AsyncTask<Void, Void, Void> {
         long success1, success2, success3, success4, success5, success6;

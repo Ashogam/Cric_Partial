@@ -7,7 +7,6 @@
     android:fitsSystemWindows="true"
     android:gravity="center"
     android:orientation="vertical"
-
     tools:context=".Splash_Screen">
 
     <ImageView

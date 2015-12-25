@@ -17,6 +17,9 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:textColor="@color/DarkBlue"
                 android:text="TEAM A" />
 
             <TextView
@@ -26,6 +29,9 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_weight="1"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:textColor="@color/DarkBlue"
                 android:text="TEAM B" />
 
             <TextView
@@ -35,6 +41,9 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_weight="1"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:textColor="@color/DarkBlue"
                 android:text="INNINGS" />
 
             <TextView
@@ -43,9 +52,23 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:textColor="@color/DarkBlue"
                 android:layout_weight="1"
                 android:text="OVER" />
 
+            <TextView
+                android:id="@+id/TD"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:textColor="@color/DarkBlue"
+                android:layout_weight="1"
+                android:text="DATE" />
 
         </LinearLayout>
 

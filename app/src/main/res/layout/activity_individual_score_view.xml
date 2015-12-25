@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Black"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     tools:context="com.ashok.android.cric_grap.IndividualScoreView">
 
     <TextView
@@ -17,17 +19,18 @@
         android:textColor="@color/BlueViolet"
         android:textStyle="bold"
         android:typeface="serif"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@color/Blueee"
+        android:layout_height="48dp"
         android:layout_marginBottom="10dp"
-
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10sp">
 
         <TextView
 
@@ -37,7 +40,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="NAME"
-            android:textColor="@color/BlueViolet"
+            android:textColor="@color/WhiteSmoke"
             android:textStyle="bold"
             android:typeface="serif" />
 
@@ -49,7 +52,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="BALL"
-            android:textColor="@color/BlueViolet"
+            android:textColor="@color/WhiteSmoke"
             android:textStyle="bold"
             android:typeface="serif" />
 
@@ -62,9 +65,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="SCORE"
+            android:textColor="@color/WhiteSmoke"
             android:textStyle="bold"
-            android:typeface="serif"
-            android:textColor="@color/BlueViolet" />
+            android:typeface="serif" />
 
         <TextView
 
@@ -73,21 +76,77 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="SCORE TYPE"
+            android:text="TYPE"
+            android:textColor="@color/WhiteSmoke"
             android:textStyle="bold"
-            android:typeface="serif"
-            android:textColor="@color/BlueViolet" />
+            android:typeface="serif" />
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="INNINGS"
+            android:textColor="@color/WhiteSmoke"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/individualList"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:divider="@color/Blue"
-        android:scrollbarStyle="outsideOverlay"
-        android:layout_weight="1">
-    </ListView>
+        android:dividerHeight="2dp"
+        android:fadeScrollbars="true"
+        android:fadingEdge="vertical"
+
+        android:footerDividersEnabled="true"
+        android:scrollbarStyle="outsideOverlay"></ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="@color/Blueee"
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
+
+
+        <TextView
+            android:id="@+id/setOver"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Over"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
+
+
+        <TextView
+            android:id="@+id/setScore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Scer"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
+
+
+    </LinearLayout>
+
+
 </LinearLayout>

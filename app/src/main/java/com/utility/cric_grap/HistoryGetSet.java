@@ -10,6 +10,16 @@ public class HistoryGetSet {
     private String INNINGS;
     private String OVER;
 
+    public String getDATE() {
+        return DATE;
+    }
+
+    public void setDATE(String DATE) {
+        this.DATE = DATE;
+    }
+
+    private String DATE;
+
     public String getTEAMA() {
         return TEAMA;
     }

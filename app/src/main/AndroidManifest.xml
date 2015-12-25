@@ -80,7 +80,9 @@
             android:label="@string/title_activity_history"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".IndividualScoreView" >
+        <activity android:name=".IndividualScoreView"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
         </activity>
     </application>
 

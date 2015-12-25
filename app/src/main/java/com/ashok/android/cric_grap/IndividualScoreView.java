@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -23,11 +24,13 @@ import java.util.ArrayList;
 
 public class IndividualScoreView extends AppCompatActivity {
     ListView individualList;
-    TextView failedText;
+    TextView failedText,setOver,setScore;
     LinearLayout title;
     private Player_Score_Information information;
     IndividualAdapt individualAdapt;
     private ArrayList<IndividualGetSet> arrayList;
+    int mpos;
+    String dates;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +38,14 @@ public class IndividualScoreView extends AppCompatActivity {
         init();
 
         Intent intent=getIntent();
-        final int mpos=intent.getIntExtra("position",0);
+        mpos=intent.getIntExtra("position",0);
 
-
+        dates=Custom_History_ListView.items.get(mpos).getDATE();
         Log.e("Position", mpos + "+++++" + Custom_History_ListView.items.get(mpos).getINNINGS());
-        Log.e("Date",""+History.chooseDate.getText().toString());
+        Log.e("over", mpos + "+++++" + Custom_History_ListView.items.get(mpos).getOVER());
+        Log.e("Date",""+Custom_History_ListView.items.get(mpos).getDATE());
         new AsyncTask<Void,Void,ArrayList<IndividualGetSet>>(){
-            String dates=History.chooseDate.getText().toString();
+
 
             @Override
             protected void onPreExecute() {
@@ -53,40 +57,22 @@ public class IndividualScoreView extends AppCompatActivity {
             protected ArrayList<IndividualGetSet> doInBackground(Void... params) {
                 try{
                     information.open();
-                    information.combineTableSet(Custom_History_ListView.items.get(mpos).getINNINGS(),dates);
-                    JSONArray array=information.showOnList(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
-
-                    if(array!=null) {
+                    //information.combineTableSet(Custom_History_ListView.items.get(mpos).getINNINGS(),dates);
+                    JSONArray array=information.combineTableSet(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
+                    if(array!=null){
                         Log.w("arrayyyy", array.toString());
-                        for (int i = 0; i < array.length(); i++) {
+                        for(int i=0;i<array.length();i++){
                             JSONObject object = array.getJSONObject(i);
                             IndividualGetSet indi = new IndividualGetSet();
-                            Log.w("arrayyyy", object.getString("PlayerName"));
-                            Log.w("arrayyyy", object.getString("Ball_number"));
-                            Log.w("arrayyyy", object.getString("Score"));
-                            indi.setPLAYERNAME(object.getString("PlayerName"));
-                            indi.setBALL_NUMBER(object.getString("Ball_number"));
-                            indi.setSCORE(object.getString("Score"));
-                            indi.setType("Regular");
+                            indi.setPLAYERNAME(object.getString("Player_Name"));
+                            indi.setBALL_NUMBER(object.getString("BALL_NUM"));
+                            indi.setSCORE(object.getString("SCORE"));
+                            indi.setType(object.getString("Type"));
+                            indi.setInnings(object.getString("INNINGS"));
                             arrayList.add(indi);
                         }
                     }
-                    JSONArray array1=information.showOnExtraList(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
 
-                    if(array1!=null) {
-                        for (int i = 0; i < array1.length(); i++) {
-                            JSONObject object = array1.getJSONObject(i);
-                            IndividualGetSet indi = new IndividualGetSet();
-                            Log.w("arrayyyy", object.getString("PlayerName"));
-                            Log.w("arrayyyy", object.getString("Ball_number"));
-                            Log.w("arrayyyy", object.getString("Score"));
-                            indi.setPLAYERNAME(object.getString("PlayerName"));
-                            indi.setBALL_NUMBER(object.getString("Ball_number"));
-                            indi.setSCORE(object.getString("Score"));
-                            indi.setType("Extra");
-                            arrayList.add(indi);
-                        }
-                    }
                     return arrayList;
                 }catch (Exception e){
                     e.printStackTrace();
@@ -116,12 +102,31 @@ public class IndividualScoreView extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try{
+            information.open();
+            String QuickScore=information.combineScore(Custom_History_ListView.items.get(mpos).getINNINGS(), dates);
+            if(QuickScore!=null){
+            setScore.setText("Total Score : "+QuickScore);}else{setScore.setText("Total Score : NA");}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private void init() {
         individualList= (ListView) findViewById(R.id.individualList);
         failedText
                 = (TextView) findViewById(R.id.failedText);
         title= (LinearLayout) findViewById(R.id.title);
         information=new Player_Score_Information(IndividualScoreView.this);
+        setOver=(TextView) findViewById(R.id.setOver);
+        setScore=(TextView) findViewById(R.id.setScore);
+        if(!TextUtils.isEmpty(Custom_History_ListView.items.get(mpos).getOVER()))
+            setOver.setText("Total Over : "+Custom_History_ListView.items.get(mpos).getOVER());
+        else
+            setOver.setText("Total Over : NA");
 
 
     }

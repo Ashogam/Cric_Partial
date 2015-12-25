@@ -23,7 +23,6 @@
             android:layout_weight="1"
             android:background="@android:drawable/editbox_background_normal"
             android:gravity="center"
-
             android:hint="Choose Date"
             android:windowSoftInputMode="stateHidden" />
 
@@ -32,6 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@drawable/listselect"
             android:drawableRight="@android:drawable/ic_menu_search"
             android:text="Search" />
     </LinearLayout>
@@ -44,7 +44,6 @@
         android:visibility="gone">
 
         <TextView
-
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -119,7 +118,15 @@
             android:gravity="center"
             android:textColor="@color/BlueViolet"
             android:text="OVER" />
+        <TextView
 
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/BlueViolet"
+            android:text="DATE" />
 
     </LinearLayout>
 
@@ -128,7 +135,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:divider="@color/DarkGray"
+        android:divider="@color/BlueViolet"
+        android:dividerHeight="1dp"
+        android:fadeScrollbars="true"
+        android:background="@drawable/listselect"
+        android:fadingEdge="vertical"
+        android:footerDividersEnabled="true"
         android:scrollbarStyle="outsideInset">
 
     </ListView>

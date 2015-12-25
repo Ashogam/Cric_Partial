@@ -10,6 +10,16 @@ public class IndividualGetSet {
     private String SCORE;
     private String type;
 
+    public String getInnings() {
+        return Innings;
+    }
+
+    public void setInnings(String innings) {
+        Innings = innings;
+    }
+
+    private String Innings;
+
     public String getType() {
         return type;
     }

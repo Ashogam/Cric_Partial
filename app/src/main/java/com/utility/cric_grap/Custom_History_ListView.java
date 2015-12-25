@@ -65,6 +65,7 @@ public class Custom_History_ListView extends ArrayAdapter<HistoryGetSet> {
                 holder.teamB.setText(items.get(position).getTEAMB());
                 holder.innings.setText(items.get(position).getINNINGS());
                 holder.over.setText(items.get(position).getOVER());
+                holder.date.setText(items.get(position).getDATE());
                 vi.setOnClickListener(new OnItemClick(position));
             }
             return vi;
@@ -76,13 +77,14 @@ public class Custom_History_ListView extends ArrayAdapter<HistoryGetSet> {
     }
 
     public class Holder {
-        TextView teamA, teamB, innings, over;
+        TextView teamA, teamB, innings, over,date;
 
         public Holder(View vi) {
             teamA = (TextView) vi.findViewById(R.id.TA);
             teamB = (TextView) vi.findViewById(R.id.TB);
             innings = (TextView) vi.findViewById(R.id.TI);
             over = (TextView) vi.findViewById(R.id.TO);
+            date = (TextView) vi.findViewById(R.id.TD);
         }
     }
 
